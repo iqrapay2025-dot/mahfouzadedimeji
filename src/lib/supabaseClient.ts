@@ -1,40 +1,42 @@
 import { createClient, type SupabaseClient } from '@supabase/supabase-js'
+import { projectId, publicAnonKey } from '../../utils/supabase/info'
 
-// Read from environment variables — never hardcode real keys in source files
+// Read from environment variables when they are provided (e.g. Vercel/Netlify
+// project settings, or local .env.local). Never hardcode real keys in source.
 const supabaseUrl: string = import.meta.env.VITE_SUPABASE_URL?.trim() ?? ''
 
 const supabaseAnonKey: string = import.meta.env.VITE_SUPABASE_ANON_KEY?.trim() ?? ''
 
 const isConfigured = Boolean(supabaseUrl && supabaseAnonKey)
 
-// A syntactically valid fallback so the client can always be constructed.
-// Otherwise createClient('', '') throws `supabaseUrl is required` at module
-// load, which happens on hosts (Vercel/Netlify) where the real .env.local is
-// not present and the build resolves the vars to empty strings — producing a
-// blank white page before React ever mounts. With a real config this code
-// path is never used.
-export const supabase: SupabaseClient = createClient(
-  isConfigured ? supabaseUrl : 'https://placeholder.supabase.co',
-  isConfigured ? supabaseAnonKey : 'public-anonymous-key',
-  {
-    auth: {
-      persistSession: true,
-      autoRefreshToken: true,
-      detectSessionInUrl: true,
+// Fall back to the committed Supabase project credentials in
+// utils/supabase/info.tsx. Those values are shipped inside the built bundle, so
+// the app keeps working on hosts (Vercel/Netlify) where the real .env.local is
+// never deployed and the VITE_* vars resolve to empty strings — which otherwise
+// caused every query to fail (essays/publications shown as "0") and admin login
+// to report "Invalid credentials". The anon/public key is safe to expose by
+// design. When env vars are set, they take precedence over this fallback.
+const resolvedUrl = supabaseUrl || `https://${projectId}.supabase.co`
+const resolvedAnonKey = supabaseAnonKey || publicAnonKey
+
+export const supabase: SupabaseClient = createClient(resolvedUrl, resolvedAnonKey, {
+  auth: {
+    persistSession: true,
+    autoRefreshToken: true,
+    detectSessionInUrl: true,
+  },
+  realtime: {
+    params: {
+      eventsPerSecond: 10,
     },
-    realtime: {
-      params: {
-        eventsPerSecond: 10,
-      },
-    },
-  }
-)
+  },
+})
 
 if (!isConfigured) {
   console.warn(
-    'Supabase credentials missing (VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY are not set for this environment). ' +
-      'The site will render but live data will be unavailable. Add these to your Vercel/Netlify project ' +
-      'environment variables and redeploy. Locally: copy .env.example to .env.local and fill them in.'
+    'VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY are not set for this environment. ' +
+      'Falling back to the committed Supabase project credentials from utils/supabase/info.tsx. ' +
+      'To use different credentials, set these env vars (e.g. in your Vercel project settings) and redeploy.'
   )
 }
 

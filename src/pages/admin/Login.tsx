@@ -39,8 +39,8 @@ export default function Login() {
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: '#f5f5f7', display: 'flex' }}>
-      {/* Left panel */}
-      <div style={{ width: '42%', backgroundColor: 'var(--orange)', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: '3.5rem', position: 'relative', overflow: 'hidden' }}>
+      {/* Left panel — hidden on mobile (see .hide-mobile) */}
+      <div className="hide-mobile" style={{ width: '42%', backgroundColor: 'var(--orange)', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: '3.5rem', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', top: '-4rem', right: '-4rem', width: '280px', height: '280px', borderRadius: '50%', border: '1px solid rgba(255,255,255,0.1)' }} />
         <div style={{ position: 'absolute', top: '8rem', left: '-5rem', width: '200px', height: '200px', borderRadius: '50%', border: '1px solid rgba(255,255,255,0.1)' }} />
         <div>
@@ -60,8 +60,20 @@ export default function Login() {
       </div>
 
       {/* Right login */}
-      <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '3rem 2.5rem' }}>
-        <div style={{ width: '100%', maxWidth: '400px' }}>
+      <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '5rem 1.5rem 3rem', minWidth: 0 }}>
+
+        {/* Compact brand header — shown only on mobile (see .show-mobile) */}
+        <div className="show-mobile" style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 10, backgroundColor: 'var(--orange)', padding: '1rem 1.5rem', alignItems: 'center', gap: '0.6rem' }}>
+          <div style={{ width: '32px', height: '32px', borderRadius: '50%', backgroundColor: 'rgba(255,255,255,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <span style={{ fontFamily: 'Manrope', fontWeight: 900, fontSize: '1rem', color: '#fff' }}>M</span>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.1 }}>
+            <span style={{ fontFamily: 'Manrope', fontWeight: 800, fontSize: '0.9rem', color: '#fff', letterSpacing: '0.06em' }}>ADEDIMEJI</span>
+            <span style={{ fontFamily: 'Inter', fontSize: '0.65rem', color: 'rgba(255,255,255,0.8)', letterSpacing: '0.05em' }}>ADMIN PORTAL</span>
+          </div>
+        </div>
+
+        <div style={{ width: '100%', maxWidth: '400px', marginTop: '0.5rem' }}>
           {!forgotMode ? (
             <>
               <h2 style={{ fontFamily: 'Manrope', fontWeight: 900, fontSize: '2rem', color: '#111', marginBottom: '0.5rem' }}>Sign In</h2>
