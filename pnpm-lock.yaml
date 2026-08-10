@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@supabase/realtime-js':
+        specifier: ^2.112.2
+        version: 2.112.2
       '@supabase/supabase-js':
         specifier: ^2.112.2
         version: 2.112.2
