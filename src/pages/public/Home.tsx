@@ -4,11 +4,14 @@ import usePosts from '../../hooks/usePosts'
 import PostCard from '../../components/public/PostCard'
 import { useScrollReveal } from '../../hooks/useScrollReveal'
 import profSpeaking from '../../imports/images.jpeg'
+import heroImg1 from '../../imports/mahfouz-adedimeji.jpg'
+import heroImg2 from '../../imports/FB_IMG_1607423277709-720x375-1.jpg'
+import heroImg3 from '../../imports/WhatsApp-Image-2025-09-17-at-10.01.26-1045x698.jpeg'
 
 const HERO_SLIDES = [
-  { src: 'https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1600&h=700&fit=crop&auto=format', alt: 'University graduation ceremony' },
-  { src: 'https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=1600&h=700&fit=crop&auto=format', alt: 'Academic lecture hall' },
-  { src: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=1600&h=700&fit=crop&auto=format', alt: 'Library books and scholarship' },
+  { src: heroImg1, alt: 'Mahfouz Adedimeji' },
+  { src: heroImg2, alt: 'Mahfouz Adedimeji speaking' },
+  { src: heroImg3, alt: 'Mahfouz Adedimeji portrait' },
 ]
 
 const IMG = {
